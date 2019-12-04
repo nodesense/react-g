@@ -1,0 +1,32 @@
+function connect(mapStateToProps) {
+    function (store) {
+         return class   ReduxContainer {
+                this.state = {
+                    valuesFromStore: {}
+                }
+
+                constructor(props) {
+                    super(props)
+
+                    store.subscribe(() => {
+                      const props = mapStateToProps(state);
+                      this.setState({
+                          valuesFromStore: props
+                      })
+                    })
+                }
+
+                render() {
+                    return <ContainedComponent {...this.valuesFromStore} />
+                }
+            }
+    }
+}
+
+function mapStateToProps (state) {
+    return {
+        title: state.title,
+        amount: state.amount
+    }
+}
+ReduxContainer = connecT(mapStateToProps) (ContainedComponent)
